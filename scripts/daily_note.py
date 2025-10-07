@@ -1,6 +1,7 @@
-#!/user/bin/env python 3
+#!/usr/bin/env python3
 from datetime import date
 from pathlib import Path
+
 
 def create_daily_note():
     today = date.today().isoformat()
@@ -9,10 +10,11 @@ def create_daily_note():
     note_file = notes_dir / f"{today}.md"
 
     if note_file.exists():
-        print(f"Note for {today} already exists: {note_fiole}")
+        print(f"Note for {today} already exists: {note_file}")
     else:
         note_file.write_text(f"# Notes for {today}\n\n- ")
         print(f"Created new note: {note_file}")
+
 
 if __name__ == "__main__":
     create_daily_note()
