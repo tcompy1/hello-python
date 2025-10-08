@@ -20,13 +20,20 @@ def main(argv: list[str] | None = None) -> int:
     st.add_parser("list", help="List open todos")
     pd = st.add_parser("done", help="Mark done")
     pd.add_argument("id", type=int)
+    pr = st.add_parser("rm", help="Remove a todo by id")  # new subcommand parser
+    pr.add_argument("id", type=int)  # require an integer id
 
     # timer
-    pti = sp.add_parser("timer", help="Simple timer")
-    sti = pti.add_subparsers(dest="action", required=True)
-    sti.add_parser("start")
-    sti.add_parser("status")
-    sti.add_parser("stop")
+    pti = sp.add_parser(
+        "timer", help="Simple timer"
+    )  # create 'timer' top-level command
+    sti = pti.add_subparsers(
+        dest="action", required=True
+    )  # subcommands live under 'timer'
+    sti.add_parser("start")  # 'timer start' starts a session
+    sti.add_parser("status")  # 'timer status' shows elapsed if running
+    sti.add_parser("stop")  # 'timer  stop' ends the session and records it
+    sti.add_parser("log")  # 'timer log' list recorded sessions
 
     # clean
     pc = sp.add_parser("clean", help="Cleanup utilities")
@@ -55,19 +62,35 @@ def main(argv: list[str] | None = None) -> int:
         print("Not found")
         return 1
 
+        if args.action == "rm":
+            removed = todo.remove(args.id)  # call the function
+            print("Removed" if removed else "Not found")  # user feedback
+            return 0 if removed else 1  # exit code mirrors result
+
     if args.cmd == "timer":
         if args.action == "start":
             started = timer.start()
-            print("Timer already running" if started is None else "Started")
+            print("Timer already running" if started is None else "started")
             return 0
+
         if args.action == "status":
             s = timer.status()
             print("Not running" if s is None else f"Elapsed: {int(s)}s")
             return 0
-        # stop
-        e = timer.stop()
-        print("Not running" if e is None else f"Stopped at {int(e)}s")
-        return 0
+
+        if args.action == "stop":
+            e = timer.stop()
+            print("Not running" if e is None else f"Stopped at {int(e)}s")
+            return 0
+
+        if args.action == "log":
+            rows = timer.get_log()
+            if not rows:
+                print("No sessions logged")
+                return 0
+            for i, r in enumerate(rows, start=1):
+                print(f"{i:>2}. {r['seconds']}s {r['ended_at']}")
+            return 0
 
     if args.cmd == "clean" and args.action == "rename":
         pairs = clean.plan_rename(args.pattern, args.to, Path.cwd())
