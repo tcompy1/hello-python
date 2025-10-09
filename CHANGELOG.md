@@ -5,6 +5,17 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/) and semantic 
 
 ---
 
+
+## [Unreleased] – Planned for 0.5.0
+### Planned
+- **Notes module**: quick `toolbox notes` command for creating and listing text snippets.
+- **Color polish**: add richer table formatting for `clean rename` and `timer log`.
+- **UX options**: flags like `todo list --json` for script-friendly output.
+- **Packaging**: prepare for publishing on PyPI.
+- **Docs**: add usage screenshots or GIFs in README.
+
+---
+
 ## [0.4.0] – 2025-10-09
 ### Added
 - Colorized CLI output using [rich] for todos, timer logs, and clean messages.
@@ -12,6 +23,7 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/) and semantic 
 - `timer log --limit N` option to show only the last N sessions.
 - Initial `README.md` with usage examples and install instructions.
 - Prepared package for release with version bump to `0.4.0`.
+
 
 ---
 
